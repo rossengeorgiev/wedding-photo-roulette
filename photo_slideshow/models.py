@@ -8,7 +8,7 @@ class PhotoMessage(models.Model):
     photo = models.ImageField(upload_to='slideshow', verbose_name="Photo")
 
     def photo_html(self):
-        return u'<img src="%s" style="width: 100px;"/>' % self.photo.url
+        return u'<img src="%s" style="max-width:150px;max-height:150px;"/>' % self.photo.url
 
     photo_html.short_description = 'Photo'
     photo_html.allow_tags = True
