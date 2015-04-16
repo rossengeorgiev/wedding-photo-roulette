@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} | slideshow{% endblock %}
+
+{% block content %}
+
+<div id='slideshow'>
+    <div class='background' style="background-image: url('{{pm.photo.url}}')"></div>
+    <img src='{{pm.photo.url}}' />
+    <div class='message-container'>
+        <div class='message'>
+            <p>{{ pm.message }}</p>
+            <div class="signed"><span>— <b>{{pm.name}}</b></span></div>
+        </div>
+    </div>
+    <div class='qrcode'>
+        <img src="qrcode.png">
+        <div class='headline'>Send us a photo</div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+var currentPhoto = { 'id': {{pm.id}} };
+var maxId = {{pm.id}};
+var timer = null;
+
+function loadNextPhoto() {
+    var url = '/slideshow/api';
+    url += (maxId > -1) ? '?max='+maxId+'&prev='+currentPhoto.id : '';
+
+    $.getJSON(url, function(data) {
+        if(data.id > maxId) maxId = data.id;
+
+        currentPhoto = data;
+
+        // preload new image
+        $("<img />").attr('src', data.url).load(function() {
+                setTimeout(transition, 500);
+        });
+    });
+}
+
+function transition() {
+    $("#slideshow .message").fadeOut(function() {
+            var bg = $("#slideshow > .background");
+            var nbg = bg.clone();
+
+            nbg
+            .css({'background-image': "url("+currentPhoto.url+")"})
+            .css({'z-Index': -2});
+            $('#slideshow').append(nbg);
+
+            $("#slideshow > img").fadeOut(function() {
+                    bg.fadeOut(1000, function() {
+                            $(this).remove();
+                            nbg.css({'z-Index': -1});
+                    });
+
+                    $(this)
+                    .attr('src', currentPhoto.url)
+                    .fadeIn(function() {
+                        $("#slideshow .signed b").text(currentPhoto.name);
+                        $("#slideshow .message p").text(currentPhoto.message);
+
+                        $("#slideshow .message").delay(200).fadeIn();
+                    });
+            });
+
+    });
+}
+
+$(document).ready(function() {
+        timer = setInterval(loadNextPhoto, 5000);
+});
+</script>
+
+{% endblock %}
+

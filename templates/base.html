@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <title>{% block title %} Wedding photo message {% endblock %}</title>
+    <style>
+* {
+    box-sizing: border-box;
+}
+html, body {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    font-family: Arial, sans-serif;
+}
+
+#slideshow {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    background-color: #000;
+    z-Index: -2;
+    padding: 15px 0;
+}
+
+#slideshow img {
+    max-width: 100%;
+    max-height: 100%;
+    border: 1px solid #444;
+    box-shadow: 0 0 50px 3px #000;
+}
+
+#slideshow .background {
+    position: absolute;
+    z-Index: -1;
+    left: -5%;
+    top: -5%;
+    width: 110%;
+    height: 110%;
+    background-size: cover;
+    background-position: center center;
+    filter: blur(10px) brightness(60%);
+}
+#slideshow .message-container {
+    position: absolute;
+    z-Index: 20;
+    bottom: 5%;
+    left: 0;
+    width: 100%;
+}
+#slideshow .message {
+    max-width: 600px;
+    min-width: 200px;
+    min-height: 60px;
+    display: inline-block;
+    background: rgba(255,255,255,1);
+    padding: 15px;
+    border-radius: 25px;
+    text-align: left;
+    box-shadow: 0 2px 15px 2px rgba(0,0,0,0.6);
+}
+
+#slideshow .message > .signed {
+    margin-top: 10px;
+    text-align: right;
+    padding-right: 5px;
+    color: #666;
+}
+
+#slideshow .message > p {
+    font-size: 22px;
+    margin: 0;
+}
+
+#slideshow .qrcode {
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+    width: 150px;
+    height: 150px;
+}
+#slideshow .qrcode > img {
+    border-radius: 20px;
+}
+#slideshow .qrcode > .headline {
+    position: absolute;
+    top: -20px;
+    left: 0;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    color: #eee;
+    width: 100%;
+}
+
+    </style>
+</head>
+<body>
+{% block content %}{% endblock %}
+<script src="/static/js/jquery.min.js"></script>
+{% block js %}{% endblock %}
+</body>
+</html>
+
