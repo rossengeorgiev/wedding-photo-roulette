@@ -1,0 +1,39 @@
+{% load widget_tweaks %}
+
+{% csrf_token %}
+<div class="form-group">
+    {{ form.photo.errors }}
+    <label class="col-sm-4 control-label">{{ form.photo.label_tag }}</label>
+    <div class="col-sm-8">
+    {{ form.photo }}
+    </div>
+</div>
+<div class="form-group">
+    {{ form.name.errors }}
+    <label class="col-sm-4 control-label">{{ form.name.label_tag }}</label>
+    <div class="col-sm-8">
+    {{ form.name | add_class:"form-control" }}
+    </div>
+</div>
+<div class="form-group">
+    {{ form.message.errors }}
+    <label class="col-sm-4 control-label">{{ form.message.label_tag }}</label>
+    <div class="col-sm-8">
+    {% render_field form.message class+="form-control" rows="3" %}
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-sm-offset-4 col-sm-8">
+        <button type="submit" class="btn btn-success">Send</button>
+    </div>
+</div>
+<div class="form-group row-progress">
+    <div class="col-sm-12">
+        <div class="progress" style='display: none'>
+            <div class="progress-bar progress-bar-primary progress-bar-striped" style="width: 0%">
+                <span class="sr-only">40% Complete (success)</span>
+            </div>
+        </div>
+        <div class="alert alert-danger" style='display: none' role="alert"></div>
+    </div>
+</div>

@@ -13,7 +13,8 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     # photo_slideshow views
-    url(r'^$', 'photo_slideshow.views.send_photomessage', name='post'),
+    url(r'^$', 'photo_slideshow.views.photomessage', name='post'),
+    url(r'^upload$', 'photo_slideshow.views.photomessage_upload', name='upload'),
     url(r'^thankyou/$', 'photo_slideshow.views.thankyou', name='thankyou'),
     url(r'^slideshow/$', 'photo_slideshow.views.slideshow', name='home'),
     url(r'^slideshow/api$', 'photo_slideshow.views.slideshow_api', name='slideshow_api'),

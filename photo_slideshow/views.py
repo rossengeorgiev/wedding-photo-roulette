@@ -48,7 +48,29 @@ def thankyou(request):
     return render(request, 'thankyou.html')
 
 
-def send_photomessage(request):
+def photomessage_upload(request):
+    if request.method != 'POST':
+        return JsonResponse({})
+
+    form = PhotoMessageForm(request.POST, request.FILES)
+
+    json = {
+        'success': False
+    }
+
+    if form.is_valid():
+        form.save(request)
+        json['success'] = True
+    else:
+        if 'photo' in form.errors and form.errors['photo'].as_text().find('required') == -1:
+            json['error'] = form.errors['photo'].as_text()
+        else:
+            json['error'] = "All fields are required :("
+
+    return JsonResponse(json)
+
+
+def photomessage(request):
     if request.method == 'POST':
         form = PhotoMessageForm(request.POST, request.FILES)
 

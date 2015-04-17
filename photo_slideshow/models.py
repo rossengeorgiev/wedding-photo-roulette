@@ -1,5 +1,5 @@
 from django.db import models
-from django.forms import ModelForm
+from django.forms import ModelForm, Textarea
 
 
 class PhotoMessage(models.Model):
@@ -19,4 +19,5 @@ class PhotoMessageForm(ModelForm):
         model = PhotoMessage
         exclude = []
         widgets = {
+            'message': Textarea()
         }
