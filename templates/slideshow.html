@@ -33,6 +33,7 @@ function loadNextPhoto() {
     url += (maxId > -1) ? '?max='+maxId+'&prev='+currentPhoto.id : '';
 
     $.getJSON(url, function(data) {
+        if(data.id == currentPhoto.id) return;
         if(data.id > maxId) maxId = data.id;
 
         currentPhoto = data;

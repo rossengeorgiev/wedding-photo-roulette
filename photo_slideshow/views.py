@@ -28,6 +28,9 @@ def slideshow_api(request):
         # if previous image is the last
         # return a random image from all of them
         if pm.id == maxid:
+            if prev == 1:
+                prev = -1
+
             pm = PhotoMessage.objects.exclude(id=prev).order_by('?')[0]
             random = True
 
