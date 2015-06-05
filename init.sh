@@ -12,3 +12,6 @@ python -c "from random import SystemRandom; r=SystemRandom(); print ''.join([r.c
 
 # init database
 python manage.py migrate
+
+# create admin user
+python manage.py createsuperuser
