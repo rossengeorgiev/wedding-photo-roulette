@@ -19,32 +19,41 @@ def slideshow_api(request):
     maxid = request.GET.get('max', None)
 
     pm = PhotoMessage.objects.last()
-
     random = False
-    if maxid is not None and prev is not None:
-        maxid = int(maxid)
-        prev = int(prev)
 
-        # if previous image is the last
-        # return a random image from all of them
-        if pm.id == maxid:
-            if prev == 1:
-                prev = -1
+    if not pm:
+        json = {
+            'random':  False,
+            'url': '',
+            'name': '',
+            'message': '',
+            'id': 0
+        }
+    else:
+        if maxid is not None and prev is not None:
+            maxid = int(maxid)
+            prev = int(prev)
 
-            pm = PhotoMessage.objects.exclude(id=prev).order_by('?')[0]
-            random = True
+            # if previous image is the last
+            # return a random image from all of them
+            if pm.id == maxid:
+                if prev == 1:
+                    prev = -1
 
-        # else we get the next photo message
-        else:
-            pm = PhotoMessage.objects.filter(id__gt=maxid)[0]
+                pm = PhotoMessage.objects.exclude(id=prev).order_by('?')[0]
+                random = True
 
-    json = {
-        'random':  random,
-        'url': pm.photo.url,
-        'name': pm.name,
-        'message': pm.message,
-        'id': pm.id
-    }
+            # else we get the next photo message
+            else:
+                pm = PhotoMessage.objects.filter(id__gt=maxid)[0]
+
+        json = {
+            'random':  random,
+            'url': pm.photo.url,
+            'name': pm.name,
+            'message': pm.message,
+            'id': pm.id
+        }
 
     return JsonResponse(json)
 

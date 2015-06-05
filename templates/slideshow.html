@@ -6,9 +6,9 @@
 
 <div id='slideshow'>
     <div class='background' style="background-image: url('{{pm.photo.url}}')"></div>
-    <img src='{{pm.photo.url}}' />
+    <img src='{{pm.photo.url}}' {% if not pm %}style='display:none'{% endif %}/>
     <div class='message-container'>
-        <div class='message'>
+        <div class='message' {% if not pm %}style='display:none'{% endif %}>
             <p>{{ pm.message }}</p>
             <div class="signed"><span>— <b>{{pm.name}}</b></span></div>
         </div>
@@ -24,8 +24,8 @@
 {% block js %}
 
 <script>
-var currentPhoto = { 'id': {{pm.id}} };
-var maxId = {{pm.id}};
+var currentPhoto = { 'id': {{pm.id|default:0}} };
+var maxId = {{pm.id|default:0}};
 var timer = null;
 
 function loadNextPhoto() {
