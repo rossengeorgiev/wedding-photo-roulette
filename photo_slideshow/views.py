@@ -37,12 +37,11 @@ def slideshow_api(request):
             # if previous image is the last
             # return a random image from all of them
             if pm.id == maxid:
-                if prev == 1:
-                    prev = -1
+                pms = PhotoMessage.objects.exclude(id=prev).order_by('?')
 
-                pm = PhotoMessage.objects.exclude(id=prev).order_by('?')[0]
-                random = True
-
+                if pms:
+                    pm = pms[0]
+                    random = True
             # else we get the next photo message
             else:
                 pm = PhotoMessage.objects.filter(id__gt=maxid)[0]
