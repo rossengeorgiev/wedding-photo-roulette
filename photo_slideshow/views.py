@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.conf import settings
 from photo_slideshow.models import PhotoMessage, PhotoMessageForm
+from PIL import Image, ExifTags
 import qrcode
 
 
@@ -60,6 +62,27 @@ def photomessage_upload(request):
 
     if form.is_valid():
         form.save(request)
+
+        # rotate image if necessary
+        img = Image.open(form.instance.photo)
+        exif = img._getexif()
+
+        if exif:
+            for orientation in ExifTags.TAGS.keys():
+                if ExifTags.TAGS[orientation] == 'Orientation':
+                    break
+
+            if orientation in exif:
+                if exif[orientation] == 3:
+                    img = img.rotate(180, expand=True)
+                elif exif[orientation] == 6:
+                    img = img.rotate(270, expand=True)
+                elif exif[orientation] == 8:
+                    img = img.rotate(90, expand=True)
+
+                img.save(settings.BASE_DIR + form.instance.photo.url)
+                img.close()
+
         json['success'] = True
     else:
         if 'photo' in form.errors and form.errors['photo'].as_text().find('required') == -1:
