@@ -77,23 +77,24 @@ def photomessage_upload(request):
 
         # rotate image if necessary
         img = Image.open(form.instance.photo)
-        exif = img._getexif()
 
-        if exif:
-            for orientation in ExifTags.TAGS.keys():
-                if ExifTags.TAGS[orientation] == 'Orientation':
-                    break
+        if getattr(img, '_getexif', None):
+            exif = img._getexif()
+            if exif:
+                for orientation in ExifTags.TAGS.keys():
+                    if ExifTags.TAGS[orientation] == 'Orientation':
+                        break
 
-            if orientation in exif:
-                if exif[orientation] == 3:
-                    img = img.rotate(180, expand=True)
-                elif exif[orientation] == 6:
-                    img = img.rotate(270, expand=True)
-                elif exif[orientation] == 8:
-                    img = img.rotate(90, expand=True)
+                if orientation in exif:
+                    if exif[orientation] == 3:
+                        img = img.rotate(180, expand=True)
+                    elif exif[orientation] == 6:
+                        img = img.rotate(270, expand=True)
+                    elif exif[orientation] == 8:
+                        img = img.rotate(90, expand=True)
 
-                img.save(settings.BASE_DIR + form.instance.photo.url)
-                img.close()
+                    img.save(settings.BASE_DIR + form.instance.photo.url)
+                    img.close()
 
         json['success'] = True
     else:
